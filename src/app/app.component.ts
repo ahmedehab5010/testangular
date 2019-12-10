@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'testangular';
+  activeTab = 'recipes';
+
+  onTabChange(activeTab: string) {
+    this.activeTab = activeTab;
+  }
 }
