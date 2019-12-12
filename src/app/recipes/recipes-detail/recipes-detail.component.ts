@@ -1,16 +1,18 @@
 import { Recipe } from './../recipe.model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { RecipesService } from '../recipes.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipes-detail',
   templateUrl: './recipes-detail.component.html',
   styleUrls: ['./recipes-detail.component.css']
 })
-export class RecipesDetailComponent implements OnInit {
+export class RecipesDetailComponent implements OnInit, OnDestroy {
   recipe: Recipe;
   id: number;
+  sub: Subscription;
 
   constructor(
     private recipeService: RecipesService,
@@ -19,12 +21,10 @@ export class RecipesDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = +params.id;
-        this.recipe = this.recipeService.getRecipe(this.id);
-      }
-    );
+    this.sub = this.route.params.subscribe((params: Params) => {
+      this.id = +params.id;
+      this.recipe = this.recipeService.getRecipe(this.id);
+    });
   }
 
   onAddToShoppingList() {
@@ -32,7 +32,11 @@ export class RecipesDetailComponent implements OnInit {
   }
 
   onEditRecipe() {
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], { relativeTo: this.route });
     // this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
