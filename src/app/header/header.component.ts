@@ -5,13 +5,4 @@ import { Component, Output, EventEmitter } from '@angular/core';
     templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-    @Output() activeTab = new EventEmitter<string>();
-
-    showRecipes() {
-        this.activeTab.emit('recipes');
-    }
-    showShoppingList() {
-        this.activeTab.emit('shoppinglist');
-    }
-
 }
