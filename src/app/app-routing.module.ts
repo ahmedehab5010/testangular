@@ -6,15 +6,20 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { RecipeBlankSelectionComponent } from './recipes/recipe-blank-selection/recipe-blank-selection.component';
 import { RecipesDetailComponent } from './recipes/recipes-detail/recipes-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { RecipeResolverService } from './recipes/recipes-resolver.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
-  { path: 'recipes', component: RecipesComponent , children: [
-    { path: '', component: RecipeBlankSelectionComponent },
-    { path: 'new', component: RecipeEditComponent },
-    { path: ':id', component: RecipesDetailComponent },
-    { path: ':id/edit', component: RecipeEditComponent }
-  ]},
+  {
+    path: 'recipes',
+    component: RecipesComponent,
+    children: [
+      { path: '', component: RecipeBlankSelectionComponent },
+      { path: 'new', component: RecipeEditComponent },
+      { path: ':id', component: RecipesDetailComponent, resolve: [RecipeResolverService] },
+      { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolverService] }
+    ]
+  },
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
@@ -23,5 +28,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
